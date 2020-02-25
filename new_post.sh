@@ -5,7 +5,7 @@ if [ -n "$1" ];then
 	num=$(date +%s)
 	file_name="${ndate}_jlab_blog${num}.md"
 	echo $file_name
-	touch $file_name
+	touch content/post/$file_name
 echo "---
 title: ${1}
 date: ${dtime}
