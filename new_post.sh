@@ -13,6 +13,8 @@ author: jhfnetboy
 draft: true
 comments: true
 categories: [Creative_Innovation]
+content: # say something here
++ just typing
 ---">>content/post/$file_name
 
 else
