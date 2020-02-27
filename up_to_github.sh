@@ -1,7 +1,3 @@
-cd public
-# git init
-# git remote add origin https://github.com/jhfnetboy/jlab.github.io.git
-
 #!/bin/bash
 echo -e "\033[0;32mDeploying updates to GitHub...\033[0m"
 
@@ -17,7 +13,8 @@ git push origin master
 
 
 # Build the project. 
-hugo --theme=spf13 # if using a theme, replace by `hugo --theme  <yourtheme>`
+hugo --theme=spf13  --baseUrl="http://jlab.github.io/" 
+# if using a theme, replace by `hugo --theme  <yourtheme>`
 
 # Go To Public folder
 cd public
