@@ -13,7 +13,7 @@ git push origin master
 
 
 # Build the project. 
-hugo --theme=spf13  --baseUrl="https://www.jlab.tech/" 
+hugo   --baseUrl="https://www.jlab.tech/" 
 # if using a theme, replace by `hugo --theme  <yourtheme>`
 
 # Go To Public folder
