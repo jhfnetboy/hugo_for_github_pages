@@ -13,7 +13,7 @@ hugo post/my-blog.md
 hugo server --theme=hyde --buildDrafts --watch
 
 #build static pages to publish
-hugo --theme=hyde --baseUrl="http://jlab.github.io/"
+hugo --theme=hyde --baseUrl="https://www.jlab.tech/"
 
 # static pages stored in default: public
 # push to github
