@@ -10,12 +10,12 @@ echo "---
 title: ${1}
 date: ${dtime}
 author: jhfnetboy
-draft: true
+draft: false
 comments: true
 categories: [Creative_Innovation]
-content: # say something here
-+ just typing
----">>content/post/$file_name
+---
+# ${1}
++ say something here">>content/post/$file_name
 
 else
 	echo "Pls input like ./new_post.sh \"your post title\""

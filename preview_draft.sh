@@ -1,1 +1,1 @@
-hugo server --theme=hugo-journal --buildDrafts --watch
+hugo server --theme=spf13 --buildDrafts --watch
