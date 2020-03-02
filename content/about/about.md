@@ -12,7 +12,7 @@ excerpt:   This page contains the curriculum vitae (CV) of the jhfnetboy.
 
 ## Profile
 
-+ This Jason's Lab which be called jLab and the author is Jason who was born in 1976
++ This Jason's Lab which be called jLab and the author is Jason who was a Geek.
 + and the CV you can see here:
 ![jLab.tech.cv](/assets/jhfnetboy.jpg)
 +  and now working in TQMall which located in HangZhou
@@ -32,7 +32,7 @@ excerpt:   This page contains the curriculum vitae (CV) of the jhfnetboy.
 ## Education
 
 1996 - 1999
-: NCUT ,Mathematics major, three years college
+: NCUT ,Mathematics major(Infor Mana),a academic  college
 
 2003 - 2004
 : NCUT, Master of computer applications,dropout
