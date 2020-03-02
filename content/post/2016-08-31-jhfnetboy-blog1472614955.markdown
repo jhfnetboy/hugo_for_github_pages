@@ -1,0 +1,8 @@
+---
+draft: false
+title: To be a excellent expert in some area in 10 thousands hours
+date: 2016-08-31
+author: jhfnetboy
+comments: true
+categories: [Creative_Innovation]
+---

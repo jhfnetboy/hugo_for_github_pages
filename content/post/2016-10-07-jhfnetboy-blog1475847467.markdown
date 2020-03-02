@@ -1,0 +1,10 @@
+---
+draft: false
+title: Buy a new domain jLab.tech for this blog ten years
+date: 2016-10-07
+author: jhfnetboy
+comments: true
+categories: [Creative_Innovation]
+---
+As title said,see this picture:)
++![jLab.tech](/assets/jLab.tech.png)

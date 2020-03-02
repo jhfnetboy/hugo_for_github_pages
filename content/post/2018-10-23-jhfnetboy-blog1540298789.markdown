@@ -1,0 +1,31 @@
+---
+draft: false
+title: stata的dta文件用spss打开乱码如何解决
+date: 2018-10-23
+author: jhfnetboy
+comments: true
+categories: [Creative_Innovation]
+---
+很简单，用15.1stata打开文件，进入命令行
+
+. use cfps2010family_report_nat092014.dta
+发现乱码
+. clear
+. unicode analyze cfps2010family_report_nat092014
+发现需要转译
+. unicode encoding set gb18030
+设置默认编码
+
+(default encoding now gb18030)
+
+. unicode translate cfps2010family_report_nat092014.dta
+转译
+再打开文件，正常了
+不过有一个文件不正常
+label for variable 626 (fd4_best) contains unconvertable characters
+
+我就直接打开数据文件，删除了fd4_best字段，然后再来一遍，一切正常
+然后用spss打开，一切正常了--并没有，因为dta文件格式太新，spss不正常
+导出为旧版，发现某个字段不支持。。。明天再试试excel，困了，哈哈
+:wq
+

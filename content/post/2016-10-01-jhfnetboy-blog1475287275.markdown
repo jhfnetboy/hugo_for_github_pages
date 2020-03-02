@@ -1,0 +1,267 @@
+---
+draft: false
+title: 回忆旧时光-当年创业项目和接口定义
+date: 2016-10-01
+author: jhfnetboy
+comments: true
+categories: [Creative_Innovation]
+---
+# 当时的图片
+![Logo](/assets/card.jpg)
+
+# 当时的接口文档
+Index: caijisong.md
+===================================================================
+--- caijisong.md	(revision 0)
++++ caijisong.md	(revision 2)
+@@ -0,0 +1,250 @@
++3KM API简明开发手册
++![Logo](/assets/3km.png)
++#步骤
+++ 定义baseUrl = 您的域名，例如baseUrl = 'http://3km.in'，以下所有涉及访问的，都基于baseUrl访问
++
++##1.获取App Key和App Secret
+++ Email hi@shata.me，提供相关信息，申请app key 和 secret，以及param算法规则
++
++##2.获取RequesToken
+++ /port/getRedirect?apiKey=yourApiKey&redirectUri=get_requestToken  
+++ /port/getRedirect?apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&redirectUri=getRequestToken  
+++ 返回：{"status":"success","apiKey":"15715bdbb879d82fcc852c9e0d7b9d56904baa9e",  "secret":"f60979398ad9f0dd64786da79d71447a","requestToken":"ba135a6b4337d21f8454691cbfa0804e"}
++
++##3.获取AccessToken
+++ /port/getRedirect?apiKey=15715bdbb$param = md5879d82fcc852c9e0d7b9d56904baa9e  &requestToken=ba135a6b4337d21f8454691cbfa0804e&redirectUri=getAccessToken  &param=cdb306f9aaf7cde12bcd09e04a15811e
+++ {"status":"success","apiKey":"15715bdbb879d82fcc852c9e0d7b9d56904baa9e"  ,"accessToken":"3b04f903f3570135f0a10b8b09eb8350","expiresIn":9144127}
++
++##3.1注意param需要自己计算，算法规则末尾其他资料
++
++##4.使用AccessToken, 以及param, 访问接口
+++ 注意：AccessToken有有效期，一至两个月后会过期，要跟据错误码判断后，重新携带自己的RequestToken 去获取AccessToken。
++
++#范例
++##手机号、密码登录例子
+++ baseUrl = 'http://temp.3km.in'
+++ /api/router?mobile=13675883500&password=812964&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e  &accessToken=3b04f903f3570135f0a10b8b09eb8350& redirectUri=salerLogin  &param=c54bc8f15d2d3f44a7382d1cbacfced6  
+++ 返回{"status":1,"message":"\u7528\u6237\u767b\u5f55\u8fd4\u56de\u7ed3\u679c","result"  :{"message":"\u767b\u5f55\u6210\u529f","status":true,"result":"86e7ea5d8bdd1894bed37f820aec5ffb"}}
+++ 其中包含返回的token,线上测试登录的用户名13675883500，密码：812964,也可以自行注册：temp.3km.in/user/saler
++
++##获取指店铺的指定分类商品在售列表
+++ baseUrl = 'http://temp.3km.in'
+++ /api/router?shop_goods_id=1&mobile=18582088350&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e  &accessToken=3b04f903f3570135f0a10b8b09eb8350&redirectUri=getShopGoodsInfoById  &token=1cc16cee30323710c882c5c1e2612558&param=ee3efd29afb72aa7d2d093f728c53802
+++ 返回结果：{"status":1,"message":"\u5e97\u94fa\u5185\u5546\u54c1\u4fe1\u606f",  "result":{"id":"1","categoryId":"14","goods_id":"7","price":"1.56",  "shop_category":"","goods_info":{"id":"7","categoryId":"14","name":"\u841d\u535c","description":"\u6d4b\u8bd5\u8bf4\u660e",  "price":"1.555555","pic_url":"images\/1.png","price_unit":"\u5e02\u65a4\/500\u514b",  "status":"on","createdTime":"CURDATE()","updatedTime":""},"status":"on"}}
++
++##访问约定
+++ apiKey=你的apiKey,returnType，默认=json(目前不支持其他),accessToken=你的accessToken
+++ redirectUri=要调用的方法,from=mobile,证明是来自手机的远程访问
+++ 目前有多个控制器供访问，后期会集中在router控制器访问
+++ 访问非router下的方法，必须携带from=mobile参数
+++ 当登录成功后，返回给每个用户一个唯一token，下次获取和修改个人、拥有店铺等相关信息的凭证
+++ token当涉及隐私信息时必须携带，携带token则需要同时有mobile=用户手机号
+++ 参数可以使用get,post各种方式传递，没有区别
++
++=====================================================
++#调试方法
+++ 如上所示，下面的api，只要知道必须传递的参数,方法名，即可组合url进行测试
+++ 测试网址会自动提示相关的param,token
++
++#可以供调用的api列表
++##登录场景
++###进入app闪屏引导图(不知这个术语如何表达，可以参考36kr的app，打开时第一个屏幕显示的，很简单)
+++ 纯背景色+相对位置logo+一句话,稍后mail提供
++
++###商家用户注册（认证手机号后，后台自动新开设店铺）ok
++####根据指定手机号，验证是否开过店，没有则发送验证短信
+++ ：baseUrl+/api/router?mobile=18582088350&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e  &accessToken=3b04f903f3570135f0a10b8b09eb8350&redirectUri=verifyMobile  &param=b9a8d8ecb7e6373d184c71072a8d353b
+++ 同一手机目前不可以重复开设，因为店铺网址就是3km.in/dian/手机号
+++ app请在本地做累加次数计算，一个手机号当日不能超过5次验证短信
+++ {"status":1,"message":"消息××××","result":新店url}
++
++####新开店铺 ok
+++ 根据验证码，手机号，验证是否正确，正确则新增用户(一个手机只能开一次店铺)、新增店铺，返回店铺的url
+++ 不需要token参数
+++ baseUrl = 'http://temp.3km.in'
+++ /api/router?mobile=13988880029&verifyNumber=529661&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e  &accessToken=3b04f903f3570135f0a10b8b09eb8350&redirectUri=verifyMobile2  &param=c54bc8f15d2d3f44a7382d1cbacfced6
+++ 返回{"status":1,"message":"\u5f00\u5e97\u6210\u529f","result":{"url":"http:\/\/www.weixindev.com\/dian\/13988880029"}}
+++ {"status":0,"message":"\u624b\u673a\u53f7\u5df2\u5f00\u8fc7\u5e97\u94fa\u6216\u53f7\u7801\u9519\u8bef","result":null}
+++ 用自己手机进行线上测试,否则会乱发短信，可能会被投诉
++
++
++###用户（商家）登录ok
+++ baseUrl = 'http://temp.3km.in'
+++ <pre>/api/router?mobile=18582088350&password=297216&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=3b04f903f3570135f0a10b8b09eb8350&redirectUri=salerLogin&param=c54bc8f15d2d3f44a7382d1cbacfced6</pre>
+++ 返回{"status":1,"message":"\u7528\u6237\u767b\u5f55\u8fd4\u56de\u7ed3\u679c","result"  :{"message":"\u767b\u5f55\u6210\u529f","status":true,"result":"1cc16cee30323710c882c5c1e2612558"}}
+++ 其中包含返回的token
++
++###用户重置店铺登录密码   echo ok
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+/api/router?mobile=18582088350&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&token=adb34bbcc39853843dbbeb84b921f835&accessToken=3b04f903f3570135f0a10b8b09eb8350&redirectUri=resetSalerPassword&param=c54bc8f15d2d3f44a7382d1cbacfced6</pre>
+++ <pre>执行两个动作：重置后台登录密码，短信发新密码到用户绑定的开店手机</pre>
+++ 因为更新密码，返回新的用户token
+++ <pre>返回json：{"status":1,"message":"\u624b\u673a\u8ba4\u8bc1\u77ed\u4fe1\u5df2\u53d1\u9001337324","result":"80a11738d0d8ad55a444385e29817bbb"}</pre>
++
++
++##强制引导场景
+++ 只有认证审核通过、店铺开设成功（商品上架后）`才会不再`进入强制引导场景
++
++###获取用户店铺的认证状态 echo ok
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+ /api/router?mobile=18314870191&type=isCertification&redirectUri=getShopInfoByType&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=8b6092625b0e4c92f4cad3853f9e8ac3&param=6ddb862d5b8fcaa4a89604eac1ce0382</pre>
+++ <pre>返回json:{"status":1,"message":"\u83b7\u53d6\u8be5\u624b\u673a\u5e97\u94fa\u7684\u8ba4\u8bc1\u72b6\u6001\u6210\u529f","result":"2"}</pre>
+++ isCertification：取值范围： 0默认，待认证;1,认证通过;2,认证中
++
++###获取店铺上架状态（初始化设置） echo  ok
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+/api/router?mobile=18314870191&type=status&redirectUri=getShopInfoByType&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=8b6092625b0e4c92f4cad3853f9e8ac3&param=733b66e06d565b5255bf60f6098248b7</pre>
+++ <pre>返回json:{"status":1,"message":"\u83b7\u53d6\u8be5\u624b\u673a\u5e97\u94fa\u7684\u8ba4\u8bc1\u72b6\u6001\u6210\u529f","result":"open"}</pre>
+++ 店铺状态分为 'created',  'open',  'closed',  'suspended'，只有上架商品后店铺才会开设成功，是open状态
++
++###设置店铺状态  echo ok
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+/api/router?mobile=18398764567&status=open&redirectUri=updateShopStatus&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=05973dbf855e6c8f3154477dbb4c2a1b&param=45d833cbed11ca50a5be2135153e6c0f</pre>
+++ <pre>返回json:{"status":1,"message":"\u66f4\u65b0\u5e97\u94fa\u72b6\u6001\u6210\u529f","result":"open"}</pre>
+++ 店铺状态分为 'created',  'open',  'closed',  'suspended'，只有上架商品后后才会是open状态
++
++##店铺设置（商家信息初始化）
++###获取指定手机号的店铺信息  echo ok
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+/api/router?mobile=18314870191&type=all&redirectUri=getShopInfoByType&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=8b6092625b0e4c92f4cad3853f9e8ac3&param=733b66e06d565b5255bf60f6098248b7</pre>
+++ <pre>返回json:{"status":1,"message":"\u83b7\u53d6\u8be5\u624b\u673a\u5e97\u94fa\u4e0a\u67b6\u72b6\u6001\u6210\u529f","result":{"id":"1","name":"\u674e\u56db\u7684\u5e97","userId":"2","mobile":"18314870191","contact":"","address":"\u78a7\u6c34\u8c6a\u6e90","longitude":"0.000000","latitude":null,"checkTime":null,"activity":null,"status":"open","serviceTime":null,"send_up_prices":"30","note":null,"createdTime":null,"markets_id":"2","banner":null,"picUrl":"\/resource\/images\/shop\/etnz9706jyg4o0wsww4wkokg44ckcg0.gif","isCertification":"2"}}</pre>
++
++
++###设置店铺基本信息 echo ok
++####提交要设置的店铺所属分类（例如蔬菜、肉食等）、名称、服务时间段、起送价格、联系方式、派送范围、公告等等,店铺认证照片,店铺gps位置等
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+ /api/router?mobile=18314870191&name=%E7%8E%8B%E4%BA%94&address=%E8%A5%BF%E6%B9%96%E9%BE%99%E4%BA%95&note=%E7%BB%BF%E8%89%B2%E7%8E%AF%E4%BF%9D&redirectUri=updateShopInfo&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=8b6092625b0e4c92f4cad3853f9e8ac3&param=0f351fa88a6edc1339c5ab712d3e72bb</pre>
+++ <pre>返回json:{"status":1,"message":"\u66f4\u65b0\u5e97\u94fa\u72b6\u6001\u6210\u529f","result":true}</pre>
++
++
+++ 根据手机号获取自己的店铺信息
++####获取自己的认证照片网址 echo ok
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+/api/router?mobile=18314870191&type=picUrl&redirectUri=getShopInfoByType&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=8b6092625b0e4c92f4cad3853f9e8ac3&param=733b66e06d565b5255bf60f6098248b7</pre>
+++ <pre>返回json:{"status":1,"message":"\u83b7\u53d6\u8be5\u624b\u673a\u5e97\u94fa\u4e0a\u67b6\u72b6\u6001\u6210\u529f","result":"\/resource\/images\/shop\/etnz9706jyg4o0wsww4wkokg44ckcg0.gif"}</pre>
++
++
++##店铺商品管理
+++ 获取店铺所属分类下的元数据商品列表（店内已上架的不返回）
++
++###获取指定分类的元数据商品列表  echo ok
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl + /api/router?mobile=18398764567&categoryId=14&redirectUri=getGoodsListByCategoryId&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=05973dbf855e6c8f3154477dbb4c2a1b&param=c38b29b43f26175f6c9dcb45c5f0f4f0</pre>
+++ <pre>返回json:{"status":1,"message":"\u4f20\u9012\u53c2\u6570\u4e0d\u6b63\u786e","result":[{"id":"1","shop_id":"1","goods_id":"1","price":"","categoryId":"14","shop_category":"\u7eff\u53f6\u83dc","status":"on","goods_info":"{\"id\":1,\"name\":\"\u83e0\u83dc\",\"description\":\"1\u4e0a\u597d\u7684\u7eff\u53f6\u83dc\uff0c\u83e0\u83dc\u8865\u5145\u94c1\",\"price\":\"1.6\",\"pic_url\":\"1.png\",\"price_unit\":\"\u5e02\u65a4\/500\u514b\"}"}]}</pre>
++
++
++
++
++###批量上架商品
+++ http://temp.3km.in/api/router?mobile=18582088350&goods_ids=9,10&  apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&  accessToken=3b04f903f3570135f0a10b8b09eb8350&redirectUri=batchAddShopGoods&  token=45cebe68c73d4b41f4fa2aba070027eb¶m=d77b939c580c7168747e2e7e3570250b
+++ 返回消息：{"status":1,"message":"\u5546\u54c1\u6279\u91cf\u6dfb\u52a0\u6210\u529f","result":true}
+++ 要求提交的goods_id必须存在于元数据表
++
++###修改商品价格、描述等信息
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl + /api/router?mobile=18314870191&id=4&price=16&redirectUri=updateShopGoodInfoById&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=8b6092625b0e4c92f4cad3853f9e8ac3&param=c38b29b43f26175f6c9dcb45c5f0f4f0</pre>
+++ <pre>返回json:{"status":1,"message":"\u6210\u529f","result":true}</pre>
++
++##店铺卖出场景
++###获取指定手机号的商家店铺的订单信息，分页,默认按时间排序，最近的靠前，可以指定订单状态  echo ok
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl + /api/router?mobile=18398764567&redirectUri=listOrderByMobile&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=80a11738d0d8ad55a444385e29817bbb&param=69d7025507d696693f52efed23fa592a</pre>
+++ 返回json:<pre>{"status":1,"message":"\u83b7\u53d6\u8be5\u5206\u7c7b\u7684\u5143\u6570\u636e\u5546\u54c1\u5217\u8868\u6210\u529f","result":[{"id":"1","groupId":"1","shopId":"2","orderAmount":null,"orderQuantity":null,"type":"online_delivery","status":"created","payment":null,"processTime":"1397470978","group":{"id":"1","buyerId":"2","note":null,"groupAmount":"12","groupQuantity":"1","addressId":"1","time":"1397470978"},"address":{"id":"1","userId":null,"address":null,"mobile":null,"longitude":null,"latitude":null,"isDefault":null,"updatedTime":"1398583349"}},{"id":"4","groupId":"2","shopId":"2","orderAmount":null,"orderQuantity":null,"type":null,"status":"created","payment":null,"processTime":"1397471059","group":{"id":"2","buyerId":"2","note":"dasf;alksdjfkldasjfklasdjf","groupAmount":"60","groupQuantity":"3","addressId":"1","time":"1397471059"},"address":{"id":"1","userId":null,"address":null,"mobile":null,"longitude":null,"latitude":null,"isDefault":null,"updatedTime":"1398583349"}}]}</pre>
++
++
++###更新订单状态，返回订单的新button文本,分为受理、关闭（需要提交理由） echo ok
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl + /api/router?mobile=18398764567&orderId=1&status=close&closeReason=%E6%B2%A1%E7%A9%BA&redirectUri=updateOrderInfo&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=80a11738d0d8ad55a444385e29817bbb&param=69d7025507d696693f52efed23fa592a</pre>
+++ <pre>返回json:{"status":1,"message":"\u66f4\u65b0\u8ba2\u5355\u72b6\u6001\u6210\u529f","result":true}</pre>
++
++
++###评价某笔订单(商家针对客户或交易本身)
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl + /api/router?mobile=18398764567&commentId=12&content=%E4%B8%8D%E9%94%99%E7%9A%84%E4%B8%80%E6%AC%A1%E8%B4%AD%E7%89%A9%E7%BB%8F%E9%AA%8C&redirectUri=updateCommentByBusinesses&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=80a11738d0d8ad55a444385e29817bbb&param=334d925c4386069b408eecaabe143c68
++</pre>
+++ <pre>返回json:{"status":1,"message":"\u8bc4\u4ef7\u6210\u529f","result":{"id":"14","shopId":"1","orderId":"2","buyerId":"2","commentId":"12","content":"\u4e0d\u9519\u7684\u4e00\u6b21\u8d2d\u7269\u7ecf\u9a8c","createdTime":"1399361922","score":null}}</pre>
++==================================
++
++##账本
++###获取当日销售的订单数量和总金额、访客数
++###获取本周销售的订单数量和总金额、访客数
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl + /api/router?mobile=18398764567&type=day&redirectUri=getCountOrderInfoByCondition&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=80a11738d0d8ad55a444385e29817bbb&param=34e56706adbf9dcccd27543035f713a5</pre>
+++ <pre>返回json:{"status":1,"message":"\u66f4\u65b0\u8ba2\u5355\u72b6\u6001\u6210\u529f","result":true}</pre>
++
++##促销
++###获取可销售的大、小喇叭商品信息
+++ adTable
+++ id,name,description,price,scale,ellapsetime
++
++###ad销售表
+++ 买家id,购买时间，广告id，beginTime,endTime
++
++###大小喇叭轮播
+++ 控制销售总量,根据时间确定当日轮播数量
++
++###购买喇叭,提交买家信息、促销内容数量、促销位商品id，支付类型，转向支付跳转（微信支付，支付宝）
++
++###支付成功后返回购买页面，返回携带参数，购买完成
++
++###审核通过后，按照时间排序轮播显示
++
++###广告显示
++
++
++
++##进货
++###查询货源信息列表
+++ 根据货源信息链接
+++ 提供status[read,unread],category=supplier,特定消息类型:供货商，货源信息
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+ /api/router?userId=0&category=supplier&redirectUri=getNotifyListByStatus&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=3b04f903f3570135f0a10b8b09eb8350&token=8b6092625b0e4c92f4cad3853f9e8ac3&param=f8069e52cb5f957a7ba6b1d1a45a19c2</pre>
+++ <pre>返回json:{"status":1,"message":"\u83b7\u53d6\u6d88\u606f\u5217\u8868\u8fd4\u56de\u7ed3\u679c","result":[{"id":"41","category":"supplier","sender":"0","senderType":null,"receiver":"0","receiverType":null,"content":null,"status":"unread","sendTime":null,"readTime":null}]}</pre>
++
++
++
++###点击访问列表
+++ 因为获取信息列表时已经得到了全部内容，点击显示全部cotent即可，content是html内容
++
++
++
++##其他
++###3km二维码、店铺二维码等
++###获取属于自己的母鸡代码、母鸡二维码
+++ 每人一个唯一母鸡二维码，和自己最初注册的userid绑定，用来验证是否是你推广介绍的注册用户
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+ /api/router?userId=56&redirectUri=getMyMujiCode&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=8b6092625b0e4c92f4cad3853f9e8ac3&param=0f351fa88a6edc1339c5ab712d3e72bb</pre>
+++ <pre>返回json:{"status":1,"message":"\u53d1\u9001\u63d0\u9192\u6210\u529f","result":{"id":"43","category":"defult","sender":"56","senderType":null,"receiver":"0","receiverType":null,"content":"\u7533\u8bf7\u5370\u5237\u540d\u72472\u76d2","status":"unread","sendTime":null,"readTime":null}}</pre>
++
++
++
++###获取系统通知消息列表
+++ 左下角的系统通知图标（小喇叭图标,对应显示这个），点击后一个列表，点某个记录，显示消息内容（html 字符串）
+++ 提供userId,status[read,unread],category=system,特定消息类型
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+ /api/router?userId=0&category=system&redirectUri=getNotifyListByStatus&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=3b04f903f3570135f0a10b8b09eb8350&token=8b6092625b0e4c92f4cad3853f9e8ac3&param=f8069e52cb5f957a7ba6b1d1a45a19c2</pre>
+++ <pre>返回json:{"status":1,"message":"\u83b7\u53d6\u6d88\u606f\u5217\u8868\u8fd4\u56de\u7ed3\u679c","result":[{"id":"41","category":"defult","sender":"0","senderType":null,"receiver":"0","receiverType":null,"content":null,"status":"unread","sendTime":null,"readTime":null},{"id":"42","category":"defult","sender":"0","senderType":null,"receiver":"0","receiverType":null,"content":null,"status":"unread","sendTime":null,"readTime":null},{"id":"43","category":"defult","sender":"56","senderType":null,"receiver":"0","receiverType":null,"content":"\u7533\u8bf7\u5370\u5237\u540d\u72472\u76d2","status":"unread","sendTime":null,"readTime":null},{"id":"44","category":null,"sender":"56","senderType":null,"receiver":"0","receiverType":null,"content":null,"status":"unread","sendTime":null,"readTime":null},{"id":"45","category":"userAdvice","sender":"56","senderType":null,"receiver":"0","receiverType":null,"content":null,"status":"unread","sendTime":null,"readTime":null},{"id":"46","category":"userAdvice","sender":"56","senderType":null,"receiver":"0","receiverType":null,"content":null,"status":"unread","sendTime":null,"readTime":null},{"id":"47","category":"userAdvice","sender":"56","senderType":null,"receiver":"0","receiverType":null,"content":"asdlfajsf","status":"unread","sendTime":null,"readTime":null},{"id":"48","category":"salerCardApply","sender":"56","senderType":null,"receiver":"0","receiverType":null,"content":null,"status":"unread","sendTime":null,"readTime":null}]}</pre>
++
++###商家提意见，发送文本，获得返回状态
+++ 限制字数300之内，提供userId,content，category=userAdvice,特定消息类型
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+ /api/router?userId=56&category=userAdvice&redirectUri=addNotificationApply&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=8b6092625b0e4c92f4cad3853f9e8ac3&param=0f351fa88a6edc1339c5ab712d3e72bb</pre>
+++ <pre>返回json:{"status":1,"message":"\u53d1\u9001\u63d0\u9192\u6210\u529f","result":{"id":"43","category":"defult","sender":"56","senderType":null,"receiver":"0","receiverType":null,"content":"\u7533\u8bf7\u5370\u5237\u540d\u72472\u76d2","status":"unread","sendTime":null,"readTime":null}}</pre>
++
++
++###申请名片、DM
+++ 商家可以申请名片(两盒)，个人可以申请DM(小母鸡)，需要申请后人工淘宝下单，快递过去
+++ <pre>baseUrl = 'http://temp.3km.in'</pre>
+++ <pre>baseUrl+ /api/router?userId=56&category=salerCardApply&redirectUri=addNotificationApply&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e&accessToken=a9285504b03b43e0b247675b888e6911&token=8b6092625b0e4c92f4cad3853f9e8ac3&param=0f351fa88a6edc1339c5ab712d3e72bb</pre>
+++ <pre>返回json:{"status":1,"message":"\u53d1\u9001\u63d0\u9192\u6210\u529f","result":{"id":"43","category":"defult","sender":"56","senderType":null,"receiver":"0","receiverType":null,"content":"\u7533\u8bf7\u5370\u5237\u540d\u72472\u76d2","status":"unread","sendTime":null,"readTime":null}}</pre>
+++ category有两种：salerCardApply，DMApply
++
++
++
++#其他资料
+++ $param = md5($apiUser['secret'].$apiUser['accessToken'].$queryStr)
+++ 所谓queryStr,为所有的参数字符串的组合，例如范例中的queryStr=
+++ mobile=18582088350&password=525805&from=mobile&apiKey=15715bdbb879d82fcc852c9e0d7b9d56904baa9e  &accessToken=3b04f903f3570135f0a10b8b09eb8350&redirectUri=salerLogin
+++ 即去掉头部url，尾部param之后剩下的串，post方式会转为平等的字符串后组合同样字符串
+++ 参数可以使用get,post各种方式传递，没有区别
+++ 约定param必须在最后一个传入

@@ -1,0 +1,10 @@
+---
+draft: false
+title: Congratulations! I have passed the China Fund licensing exam
+date: 2016-10-09
+author: jhfnetboy
+comments: true
+categories: [Creative_Innovation]
+---
++ As title said,see the mark:
+![exam_mark](/assets/jijin.png)

@@ -1,0 +1,15 @@
+---
+draft: false
+title: daring.ch,a new domain got
+date: 2017-06-14
+author: jhfnetboy
+comments: true
+categories: [Creative_Innovation]
+---
+# Yeah,Daring.ch
++ 此为自动讯息，通知您于 Gandi 注册的下列域名已确认注册完成：
+
++ daring.ch (https://www.gandi.net/whois/details/?search=daring.ch)
+
++ 域名已成功建立，一般DNS 传播延迟需要等待数小时才能正常使用完整功能。
+

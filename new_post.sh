@@ -1,6 +1,7 @@
 #!/bin/bash
 if [ -n "$1" ];then 
 	dtime=`date '+%Y-%m-%d %H:%M'`
+	ddate=`date '+%Y-%m-%d'`
 	ndate=`date +%Y-%m-%d`
 	num=$(date +%s)
 	file_name="${ndate}_jlab_blog${num}.md"
@@ -8,7 +9,7 @@ if [ -n "$1" ];then
 	touch content/post/$file_name
 echo "---
 title: ${1}
-date: ${dtime}
+date: ${ddate}
 author: jhfnetboy
 draft: false
 comments: true

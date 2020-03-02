@@ -1,0 +1,35 @@
+---
+draft: false
+title: sublime2插件无法更新，报错：HTTP exception InvalidCertificateException
+date: 2018-10-24
+author: jhfnetboy
+comments: true
+categories: [Creative_Innovation]
+---
+报错：(Host codeload.github.com returned an invalid certificate ([SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:548))) downloading https://codeload.github.com
+全网唯一的答案在sulbime论坛的老帖子
+copy过来
+1. 修改Package Control.sublime-settings
+2.全文修改为
+{
+	"bootstrapped": true,
+	"downloader_precedence":
+	{
+		"linux":
+		[
+			"urllib",
+			"curl",
+			"wget"
+		],
+		"osx":
+		[
+			"curl",
+			"urllib"
+		],
+		"windows":
+		[
+			"wininet"
+		]
+	}
+}
+3.重启sublime2，ok了，可以下载安装插件了

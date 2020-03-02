@@ -1,0 +1,26 @@
+---
+draft: false
+title: Goldman Sachs--BlcokChain-Putting Theory into Practice-reading this report
+date: 2017-05-08
+author: jhfnetboy
+comments: true
+categories: [Creative_Innovation]
+---
+# Describe
++ As title said,i find this report which produced by Goldman's Ph.D and many CFAs in 2016.
++ It talk about 7 topics,see the summaries:
++ What is blockchain? 
++ Putting Blockchain to Work: Seven Case Studies 
++ Case Study 1: Accelerating the Sharing Economy with reputation management 
++ Case Study 2: Building a distributed Smart Grid with blockchain 
++ Case Study 3: Reducing transaction costs in real estate title insurance 
++ Case Study 4: Capital markets – US cash equities 
++ ASX: A real-world blockchain testbed for post-trade services 
++ Case Study 5: Capital markets – Repo 
++ Case Study 6: Capital markets – Leveraged loan trading 
++ Case Study 7: AML and KYC Compliance 
++ Blockchain innovators: Select private companies 
++ Blockchain innovators: Public company enablers 
++ Disclosure Appendix 
++ ![Goldman Sachs--BlcokChain-Putting Theory into Practice-reading this report](/assets/goldman-blockchain.png) 
+# Wait for me: i will read and analysis and give a report:)

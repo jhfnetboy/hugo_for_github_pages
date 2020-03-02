@@ -1,0 +1,11 @@
+---
+draft: false
+title: 注册了robot.so域名
+date: 2016-10-01
+author: jhfnetboy
+comments: true
+categories: [Creative_Innovation]
+---
++![Logo](/assets/robot.so.png)
+
+如题，作为进军人工智能的域名吧

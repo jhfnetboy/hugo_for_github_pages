@@ -1,0 +1,9 @@
+---
+draft: false
+title: Get new domain za.link
+date: 2017-07-28
+author: jhfnetboy
+comments: true
+categories: [Creative_Innovation]
+---
+ For a tools project ,just soso.
