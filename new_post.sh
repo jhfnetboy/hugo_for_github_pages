@@ -4,7 +4,7 @@ if [ -n "$1" ];then
 	ddate=`date '+%Y-%m-%d'`
 	ndate=`date +%Y-%m-%d`
 	num=$(date +%s)
-	file_name="${ndate}_jlab_blog${num}.md"
+	file_name="${ndate}_${1}_jlab_blog_${num}.md"
 	echo $file_name
 	touch content/post/$file_name
 echo "---
