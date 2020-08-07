@@ -7,6 +7,9 @@ comments: true
 categories: [Creative_Innovation]
 ---
 # Sentences_of_life_by_jlab
+
+嗯，下周一要和团队聊聊成长和人生，自己手打，算是人生感悟，哇哈哈
+
 1.生活不易，不易在哪里，不易在想得先要舍
 
 没有对错，只有选择，感谢校宝融洽的环境和氛围，但，我们是商业，总有指挥棒
