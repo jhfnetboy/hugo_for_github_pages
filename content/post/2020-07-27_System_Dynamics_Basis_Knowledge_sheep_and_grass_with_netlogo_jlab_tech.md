@@ -9,3 +9,4 @@ categories: [Creative_Innovation]
 # System_Dynamics_Basis_Knowledge_sheep_and_grass_with_netlogo
 + As title said, just entry of system dynamics 
 + 
+
