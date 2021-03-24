@@ -2,8 +2,9 @@ package main
 
 // jhfnetboy的本地web服务，V2
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -70,4 +71,23 @@ func main() {
 // func DeleteHandler(c *gin.Context) {
 // 	c.Data(http.StatusOK, "text/plain", []byte("delete success!\n"))
 // 	return
+// }
+
+// package main
+
+// import (
+// 	"net/http"
+// 	"github.com/gin-gonic/gin"
+// )
+
+// func main() {
+// 	router := gin.Default()
+// 	router.LoadHTMLGlob("templates/*")
+// 	//router.LoadHTMLFiles("templates/template1.html", "templates/template2.html")
+// 	router.GET("/index", func(c *gin.Context) {
+// 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+// 			"title": "焦会峰的首页",
+// 		})
+// 	})
+// 	router.Run() // listen and serve on 0.0.0.0:8080
 // }
